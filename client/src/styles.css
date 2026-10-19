@@ -1,0 +1,101 @@
+:root {
+  --bg: #f6f7f9;
+  --surface: #ffffff;
+  --text: #1c2430;
+  --muted: #5d6b7c;
+  --line: #d9dee5;
+  --accent: #1f5fbf;
+  --accent-text: #ffffff;
+  --ok: #1a7f4b;
+  --warn: #9a6200;
+  --bad: #b42318;
+  color-scheme: light dark;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #11161d;
+    --surface: #19202a;
+    --text: #e6eaf0;
+    --muted: #9aa7b8;
+    --line: #2b3542;
+    --accent: #6ea2f0;
+    --accent-text: #0b1220;
+    --ok: #5fd39a;
+    --warn: #e9b44c;
+    --bad: #ff8a7d;
+  }
+}
+
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font: 16px/1.5 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+}
+
+.layout { max-width: 1100px; margin: 0 auto; padding: 24px 16px 64px; }
+header h1 { margin: 0 0 4px; font-size: 1.6rem; }
+.columns { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); gap: 20px; margin-top: 20px; align-items: start; }
+.column { display: grid; gap: 20px; }
+@media (max-width: 800px) { .columns { grid-template-columns: 1fr; } }
+
+.panel { background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 16px; }
+h2 { margin: 0 0 12px; font-size: 1.1rem; }
+h3 { margin: 20px 0 8px; font-size: 0.95rem; }
+.count { color: var(--muted); font-weight: 400; }
+.muted { color: var(--muted); margin: 0; }
+
+input, textarea {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: var(--bg);
+  color: var(--text);
+  font: inherit;
+}
+textarea { resize: vertical; }
+input:focus-visible, textarea:focus-visible, button:focus-visible, a:focus-visible, summary:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+button { font: inherit; cursor: pointer; }
+button:disabled { cursor: not-allowed; opacity: 0.55; }
+.primary { margin-top: 12px; padding: 9px 16px; border: 0; border-radius: 6px; background: var(--accent); color: var(--accent-text); font-weight: 600; }
+.link-button { margin-top: 6px; padding: 0; border: 0; background: none; color: var(--muted); text-decoration: underline; font-size: 0.85rem; }
+.link-button:hover { color: var(--bad); }
+
+.tabs { display: flex; gap: 4px; margin-bottom: 10px; }
+.tab { padding: 6px 14px; border: 1px solid var(--line); border-radius: 6px; background: transparent; color: var(--muted); }
+.tab.active { border-color: var(--accent); color: var(--text); font-weight: 600; }
+
+.error { color: var(--bad); margin: 8px 0 0; font-size: 0.9rem; }
+
+.items { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; }
+.item { padding: 12px; border: 1px solid var(--line); border-radius: 6px; }
+.item-head { display: flex; justify-content: space-between; gap: 12px; align-items: baseline; }
+.item-title { font-weight: 600; overflow-wrap: anywhere; }
+.item-meta { margin: 2px 0 0; font-size: 0.82rem; color: var(--muted); }
+.item-preview { margin: 8px 0 0; font-size: 0.9rem; color: var(--muted); overflow-wrap: anywhere; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.status { font-size: 0.8rem; white-space: nowrap; }
+.status.ready { color: var(--ok); }
+.status.processing { color: var(--warn); }
+.status.failed { color: var(--bad); }
+
+.ask-form { display: flex; gap: 8px; align-items: flex-start; }
+.ask-form .primary { margin-top: 0; white-space: nowrap; }
+
+.answer { margin-top: 16px; }
+.answer.stale { opacity: 0.6; }
+.answer-text { margin: 8px 0 0; font-size: 1.05rem; white-space: pre-wrap; }
+.sources { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+.source { border: 1px solid var(--line); border-radius: 6px; padding: 10px 12px; }
+.source-head { display: flex; gap: 8px; align-items: baseline; flex-wrap: wrap; font-size: 0.9rem; }
+.ref { font-weight: 700; color: var(--accent); }
+.score { margin-left: auto; color: var(--muted); font-size: 0.8rem; }
+.source a { color: var(--accent); overflow-wrap: anywhere; }
+blockquote { margin: 8px 0 0; padding-left: 10px; border-left: 3px solid var(--line); color: var(--muted); font-size: 0.9rem; white-space: pre-wrap; overflow-wrap: anywhere; max-height: 12em; overflow: auto; }
+details { margin-top: 12px; }
+summary { cursor: pointer; color: var(--muted); font-size: 0.9rem; margin-bottom: 8px; }
