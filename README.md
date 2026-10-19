@@ -2,12 +2,12 @@
 
 Save short notes or web pages, then ask questions about them. Answers are generated from your saved content only and cite the passages they used.
 
-- **Backend:** Node 20+, Express 4, TypeScript, SQLite (`better-sqlite3`), OpenAI (embeddings + chat)
+- **Backend:** Node 20+, Express 4, TypeScript, SQLite (`better-sqlite3`), OpenAI or any OpenAI-compatible API (embeddings + chat)
 - **Frontend:** React 19 + Vite, hooks only, plain CSS
 
 ## Run it locally
 
-Requirements: Node 20 or newer and an OpenAI API key.
+Requirements: Node 20 or newer and an API key for OpenAI or any OpenAI-compatible provider (set `OPENAI_BASE_URL`; `server/.env.example` has a Gemini example).
 
 ```bash
 npm install
@@ -75,7 +75,7 @@ All errors share one shape: `{ "error": { "code", "message", "details"? } }`.
 
 **Vector store: SQLite + brute-force search.** Embeddings are stored as float32 BLOBs next to the text and metadata, and each query scans all chunks in memory. Vectors are normalised on write so cosine similarity is a dot product. This gives exact results, a single file to run and inspect, and no extra service. The cost is that query time grows linearly with the number of chunks.
 
-**Relevance threshold.** Chunks below `MIN_SIMILARITY` are dropped. If nothing is left, the API answers "couldn't find anything" without calling the LLM, which saves a call and removes the chance of a made-up answer. The default (0.55) is a starting point for `text-embedding-3-small` and should be tuned on real data.
+**Relevance threshold.** Chunks below `MIN_SIMILARITY` are dropped. If nothing is left, the API answers "couldn't find anything" without calling the LLM, which saves a call and removes the chance of a made-up answer. The default (0.2) suits OpenAI's `text-embedding-3-small`. With Gemini embeddings, unrelated text scores much higher, so I tuned the cutoff to 0.55 from observed scores (relevant questions scored 62-77%, an unrelated one 49%). The right value depends on the embedding model and should be re-tuned whenever it changes.
 
 **Citations.** Retrieved passages are sent to the model numbered `[1]..[n]` and the prompt requires citing by number. The server then removes any `[n]` that does not correspond to a passage it sent, and marks each source with `cited: true/false`. The UI shows the cited passages first and the other retrieved ones collapsed. This verifies that citations point at real sources, but it does not prove the cited passage supports the claim.
 
