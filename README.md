@@ -89,6 +89,16 @@ All errors share one shape: `{ "error": { "code", "message", "details"? } }`.
 
 **Debuggability.** Structured JSON logs (pino) with a request id that is also returned in the `x-request-id` header; per-item logs for indexing; consistent status codes (`400` validation, `404` missing, `422` content that can't be used, `502` upstream failure, `500` unexpected). Unexpected errors are logged in full but only a generic message is returned or stored on the item.
 
+## Known limitations (deliberately out of scope)
+
+- **JavaScript-rendered pages** are not supported (scripts are never run), nor are pages behind logins, paywalls or bot protection. These fail with a clear message.
+- **Only HTML and plain text** are accepted. PDFs, images and other file types are rejected with a 422.
+- **Single user, no auth.** Items are not scoped to anyone.
+- **No retries or de-duplication.** A failed item has to be deleted and re-added; the same URL can be saved twice.
+- **No pagination** on `GET /items` and no streaming of answers.
+- **Citation checks are structural.** The server verifies a cited passage exists, not that it supports the claim.
+- **The React UI has no automated tests**; the backend does (49).
+
 ## What breaks at scale
 
 - **Search is O(number of chunks).** Every query loads and scans all vectors. It is comfortable for thousands of chunks and gets slow somewhere past ~100k, and memory use grows with it.
